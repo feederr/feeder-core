@@ -39,7 +39,7 @@
     <repository>
       <id>github</id>
       <name>Feeder Organization</name>
-      <url>https://maven.pkg.github.com/feederr</url>
+      <url>https://maven.pkg.github.com/feederr/feeder-core</url>
     </repository>
 
   </distributionManagement>
