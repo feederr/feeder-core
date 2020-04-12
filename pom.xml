@@ -34,4 +34,14 @@
 
   </dependencies>
 
+  <distributionManagement>
+
+    <repository>
+      <id>github</id>
+      <name>Feeder Organization</name>
+      <url>https://maven.pkg.github.com/feederr</url>
+    </repository>
+
+  </distributionManagement>
+
 </project>
