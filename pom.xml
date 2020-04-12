@@ -5,9 +5,14 @@
 
   <modelVersion>4.0.0</modelVersion>
 
+<!--  DO NOT FORGET TO UPDATE THE LIBRARY VERSION according to SemVer (https://semver.org/) strategy with every raised PR:-->
+<!--  Version numbers take the form X.Y.Z and each of those fields means something well defined and specific.-->
+<!--  X is the major number. Changes in this indicate breaking changes to the API (and/or behavior).-->
+<!--  Y is the minor number. Changes to this number indicate that new features were added, but that no APIs are broken as a result.-->
+<!--  Z is the patch version. Changes to this indicate that internal changes were made, but that no changes (even compatible changes) were made to the API.-->
   <properties>
     <java.version>13</java.version>
-    <project.version>0.0.1</project.version>
+    <project.version>0.0.2</project.version>
   </properties>
 
   <parent>
