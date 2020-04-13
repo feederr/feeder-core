@@ -17,7 +17,9 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.13
-      - name: Maven Package
-        run: mvn -B clean package -DskipTests
-      - name: Maven Verify
-        run: mvn -B clean verify
+      - name: Checkstyle
+        run: ./mvnw checkstyle:check
+      - name: Package
+        run: ./mvnw clean package -DskipTests
+      - name: Verify
+        run: ./mvnw clean verify
