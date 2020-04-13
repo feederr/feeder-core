@@ -18,9 +18,9 @@ jobs:
         with:
           java-version: 1.13
       - name: Maven Package
-        run: mvn -B clean package -DskipTests
+        run: ./mvnw -B clean package -DskipTests
       - name: Maven Verify
-        run: mvn -B clean verify
+        run: ./mvnw -B clean verify
 
   artifact:
     name: Publish - GitHub Packages
@@ -34,6 +34,6 @@ jobs:
         with:
           java-version: 1.13
       - name: Publish artifact on GitHub Packages
-        run: mvn -B clean deploy -DskipTests
+        run: ./mvnw -B clean deploy -DskipTests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
