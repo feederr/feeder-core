@@ -17,8 +17,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.13
-      - name: Checkstyle
-        run: ./mvnw checkstyle:check
       - name: Package
         run: ./mvnw clean package -DskipTests
       - name: Verify
