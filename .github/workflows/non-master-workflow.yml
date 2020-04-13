@@ -1,4 +1,4 @@
-name: Non master branch push
+name: PR to master branch
 
 on:
   pull_request:
