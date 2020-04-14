@@ -12,7 +12,7 @@
   <!--  Z is the patch version. Changes to this indicate that internal changes were made, but that no changes (even compatible changes) were made to the API.-->
   <properties>
     <java.version>13</java.version>
-    <project.version>0.0.8</project.version>
+    <project.version>0.1.0</project.version>
   </properties>
 
   <parent>
@@ -55,7 +55,7 @@
         <configuration>
           <configLocation>google-checkstyle.xml</configLocation>
           <consoleOutput>true</consoleOutput>
-          <violationSeverity>warning</violationSeverity>
+<!--          <violationSeverity>warning</violationSeverity>-->
           <failOnViolation>true</failOnViolation>
         </configuration>
         <executions>

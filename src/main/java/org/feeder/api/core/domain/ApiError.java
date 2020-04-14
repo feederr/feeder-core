@@ -3,10 +3,12 @@ package org.feeder.api.core.domain;
 import java.util.List;
 import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @Data
 @Builder
+@RequiredArgsConstructor
 public class ApiError {
 
   private final HttpStatus status;
