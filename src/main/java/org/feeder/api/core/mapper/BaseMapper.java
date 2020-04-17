@@ -11,6 +11,8 @@ public interface BaseMapper<ENTITY, REQUEST_VO, RESPONSE_VO> {
 
   ENTITY toEntity(REQUEST_VO vo, Object... args);
 
+  void updateEntity(ENTITY entity, REQUEST_VO vo, Object... args);
+
   default List<RESPONSE_VO> toResponseVOs(List<ENTITY> entities, Object... args) {
     return Optional.ofNullable(entities)
         .orElse(Collections.emptyList())

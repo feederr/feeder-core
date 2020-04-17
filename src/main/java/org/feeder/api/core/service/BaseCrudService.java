@@ -5,7 +5,6 @@ import java.util.UUID;
 import javax.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.feeder.api.core.mapper.BaseMapper;
-import org.springframework.core.GenericTypeResolver;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -93,9 +92,5 @@ public abstract class BaseCrudService<ENTITY, REQUEST_VO, RESPONSE_VO> {
 
   protected abstract ENTITY updateEntity(ENTITY entity, REQUEST_VO vo, Object... args);
 
-  @SuppressWarnings("unchecked")
-  protected final Class<ENTITY> getEntityClass() {
-    return (Class<ENTITY>) GenericTypeResolver
-        .resolveTypeArgument(getClass(), BaseCrudService.class);
-  }
+  protected abstract Class<ENTITY> getEntityClass();
 }
