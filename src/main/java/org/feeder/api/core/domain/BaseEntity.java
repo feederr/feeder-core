@@ -8,5 +8,5 @@ import org.springframework.data.domain.Persistable;
 @Getter
 public abstract class BaseEntity<ID> implements Persistable<ID> {
 
-  private boolean isNew = false;
+  private transient boolean isNew = false;
 }
