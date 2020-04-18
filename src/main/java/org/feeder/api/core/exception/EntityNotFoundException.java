@@ -13,4 +13,10 @@ public class EntityNotFoundException extends RuntimeException {
   private final Class<?> entityClass;
 
   private final UUID entityId;
+
+  public EntityNotFoundException(String message, Class<?> entityClass, UUID entityId) {
+    super(message);
+    this.entityClass = entityClass;
+    this.entityId = entityId;
+  }
 }

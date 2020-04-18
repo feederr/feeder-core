@@ -2,8 +2,8 @@ package org.feeder.api.core.service;
 
 import java.util.Optional;
 import java.util.UUID;
-import javax.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.feeder.api.core.exception.EntityNotFoundException;
 import org.feeder.api.core.mapper.BaseMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -80,7 +80,10 @@ public abstract class BaseCrudService<ENTITY, REQUEST_VO, RESPONSE_VO> {
 
     ENTITY fetchedEntity = fetchEntityOpt.orElseThrow(
         () -> new EntityNotFoundException(
-            String.format("%s = %s not found", getEntityClass().getSimpleName(), id))
+            String.format("%s = %s not found", getEntityClass().getSimpleName(), id),
+            getEntityClass(),
+            id
+        )
     );
 
     return fetchedEntity;
