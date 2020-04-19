@@ -7,6 +7,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 import java.util.UUID;
 import javax.validation.Valid;
+import org.feeder.api.core.domain.BaseEntity;
 import org.feeder.api.core.service.BaseCrudService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-public abstract class BaseCrudController<ENTITY, REQUEST_VO, RESPONSE_VO> {
+public abstract class BaseCrudController<ENTITY extends BaseEntity, REQUEST_VO, RESPONSE_VO> {
 
   protected static final String ID_PATH = "/{id}";
 
