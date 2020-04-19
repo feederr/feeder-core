@@ -3,6 +3,7 @@ package org.feeder.api.core.service;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+import org.feeder.api.core.domain.BaseEntity;
 import org.feeder.api.core.exception.EntityNotFoundException;
 import org.feeder.api.core.mapper.BaseMapper;
 import org.springframework.data.domain.Page;
@@ -12,7 +13,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
-public abstract class BaseCrudService<ENTITY, REQUEST_VO, RESPONSE_VO> {
+public abstract class BaseCrudService<ENTITY extends BaseEntity, REQUEST_VO, RESPONSE_VO> {
 
   protected abstract BaseMapper<ENTITY, REQUEST_VO, RESPONSE_VO> getMapper();
 
@@ -72,7 +73,14 @@ public abstract class BaseCrudService<ENTITY, REQUEST_VO, RESPONSE_VO> {
     getRepository().delete(entity);
   }
 
-  protected abstract ENTITY createEntity(REQUEST_VO vo, UUID id, Object... args);
+  protected ENTITY createEntity(REQUEST_VO vo, UUID id, Object... args) {
+
+    ENTITY entity = getMapper().toEntity(vo, id);
+
+    entity.setNew(true);
+
+    return getRepository().save(entity);
+  }
 
   protected ENTITY getEntity(UUID id, Object... args) {
 
@@ -93,7 +101,12 @@ public abstract class BaseCrudService<ENTITY, REQUEST_VO, RESPONSE_VO> {
     return getRepository().findAll(pageable);
   }
 
-  protected abstract ENTITY updateEntity(ENTITY entity, REQUEST_VO vo, Object... args);
+  protected ENTITY updateEntity(ENTITY entity, REQUEST_VO vo, Object... args) {
+
+    getMapper().updateEntity(entity, vo);
+
+    return getRepository().save(entity);
+  }
 
   protected abstract Class<ENTITY> getEntityClass();
 }
