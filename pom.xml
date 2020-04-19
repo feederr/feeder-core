@@ -12,7 +12,7 @@
   <!--  Z is the patch version. Changes to this indicate that internal changes were made, but that no changes (even compatible changes) were made to the API.-->
   <properties>
     <java.version>13</java.version>
-    <project.version>0.2.4</project.version>
+    <project.version>0.2.5</project.version>
   </properties>
 
   <parent>
@@ -25,7 +25,26 @@
   <artifactId>core</artifactId>
   <version>${project.version}</version>
 
+  <dependencyManagement>
+
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>Hoxton.SR3</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+
+  </dependencyManagement>
+
   <dependencies>
+
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-oauth2</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -55,7 +74,7 @@
         <configuration>
           <configLocation>google-checkstyle.xml</configLocation>
           <consoleOutput>true</consoleOutput>
-<!--          <violationSeverity>warning</violationSeverity>-->
+          <!--          <violationSeverity>warning</violationSeverity>-->
           <failOnViolation>true</failOnViolation>
         </configuration>
         <executions>
