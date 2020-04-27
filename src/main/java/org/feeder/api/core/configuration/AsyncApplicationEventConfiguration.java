@@ -13,8 +13,10 @@ public class AsyncApplicationEventConfiguration {
 
   @Bean(name = "applicationEventMulticaster")
   public ApplicationEventMulticaster simpleApplicationEventMulticaster() {
+
     SimpleApplicationEventMulticaster eventMulticaster = new SimpleApplicationEventMulticaster();
-    eventMulticaster.setTaskExecutor(new SimpleAsyncTaskExecutor()); // TODO: check ThreadPoolTaskExecutor instead
+    eventMulticaster.setTaskExecutor(new SimpleAsyncTaskExecutor());
+
     return eventMulticaster;
   }
 }

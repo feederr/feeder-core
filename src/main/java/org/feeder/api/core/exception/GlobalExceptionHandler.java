@@ -6,7 +6,6 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.METHOD_NOT_ALLOWED;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNSUPPORTED_MEDIA_TYPE;
-
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import java.time.format.DateTimeParseException;
@@ -46,6 +45,18 @@ public class GlobalExceptionHandler {
         INTERNAL_SERVER_ERROR,
         exception.getMessage(),
         "Something went wrong"
+    );
+
+    return buildResponseEntity(error);
+  }
+
+  @ExceptionHandler(TenancyRequiredException.class)
+  public ResponseEntity<ApiError> handle(TenancyRequiredException exception) {
+
+    ApiError error = new ApiError(
+        BAD_REQUEST,
+        exception.getMessage(),
+        "tenancy is required"
     );
 
     return buildResponseEntity(error);
