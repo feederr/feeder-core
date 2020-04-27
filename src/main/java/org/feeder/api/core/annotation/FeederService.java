@@ -8,6 +8,7 @@ import org.feeder.api.core.configuration.AsyncApplicationEventConfiguration;
 import org.feeder.api.core.configuration.ExceptionHandlingConfiguration;
 import org.feeder.api.core.configuration.JpaAuditingConfiguration;
 import org.feeder.api.core.configuration.ResourceServerConfiguration;
+import org.feeder.api.core.configuration.TenancyConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 
@@ -17,7 +18,8 @@ import org.springframework.context.annotation.Import;
     ExceptionHandlingConfiguration.class,
     AsyncApplicationEventConfiguration.class,
     JpaAuditingConfiguration.class,
-    ResourceServerConfiguration.class
+    ResourceServerConfiguration.class,
+    TenancyConfiguration.class
 })
 @SpringBootApplication
 public @interface FeederService {
