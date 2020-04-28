@@ -9,8 +9,10 @@ import org.feeder.api.core.configuration.ExceptionHandlingConfiguration;
 import org.feeder.api.core.configuration.JpaAuditingConfiguration;
 import org.feeder.api.core.configuration.ResourceServerConfiguration;
 import org.feeder.api.core.configuration.TenancyConfiguration;
+import org.feeder.api.core.repository.EntityClassAwareRepository;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
@@ -22,6 +24,7 @@ import org.springframework.context.annotation.Import;
     TenancyConfiguration.class
 })
 @SpringBootApplication
+@EnableJpaRepositories(repositoryBaseClass = EntityClassAwareRepository.class)
 public @interface FeederService {
 
 }

@@ -1,4 +1,4 @@
-package org.feeder.api.core.tenancy;
+package org.feeder.api.core.util;
 
 import java.util.Map;
 import java.util.Optional;
@@ -22,13 +22,14 @@ public class AccessTokenHelper {
     CLIENT, USER
   }
 
-  public static Optional<UUID> getUserId() {
-    return getAdditionalInfo(USER_ID_KEY)
+  public static UUID extractUserId() {
+    return getValue(USER_ID_KEY)
         .map(Object::toString)
-        .map(UUID::fromString);
+        .map(UUID::fromString)
+        .orElse(null);
   }
 
-  private static Optional<Object> getAdditionalInfo(String name) {
+  private static Optional<Object> getValue(String name) {
 
     final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -37,7 +38,7 @@ public class AccessTokenHelper {
       final OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) authentication
           .getDetails();
 
-      return Optional.ofNullable((Map<String, ?>) details.getDecodedDetails())
+      return Optional.ofNullable((Map<String, Object>) details.getDecodedDetails())
           .map(decodedDetails -> decodedDetails.get(name));
     }
 
