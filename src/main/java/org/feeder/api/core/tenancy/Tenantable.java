@@ -6,11 +6,11 @@ import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
-import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.feeder.api.core.domain.BaseEntity;
+import org.feeder.api.core.exception.TenancyRequiredException;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
@@ -26,7 +26,6 @@ import org.hibernate.annotations.ParamDef;
 @EqualsAndHashCode(callSuper = false)
 public abstract class Tenantable<ID> extends BaseEntity<ID> {
 
-  @NotNull
   @Column(
       name = "tenant_id",
       updatable = false,
@@ -37,7 +36,14 @@ public abstract class Tenantable<ID> extends BaseEntity<ID> {
 
   @PrePersist
   public void populateTenancy() {
-    setTenantId(TenancyRequestContextHolder.getTenancyContext().getUserId());
+
+    UUID tenantId = TenancyRequestContextHolder.getTenancyContext().getUserId();
+
+    if (tenantId == null) {
+      throw new TenancyRequiredException("Tenancy is required for requested operation");
+    }
+
+    setTenantId(tenantId);
   }
 }
 

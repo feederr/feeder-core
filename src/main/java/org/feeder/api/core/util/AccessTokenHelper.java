@@ -22,11 +22,10 @@ public class AccessTokenHelper {
     CLIENT, USER
   }
 
-  public static UUID extractUserId() {
+  public static Optional<UUID> extractUserId() {
     return getValue(USER_ID_KEY)
         .map(Object::toString)
-        .map(UUID::fromString)
-        .orElse(null);
+        .map(UUID::fromString);
   }
 
   private static Optional<Object> getValue(String name) {
