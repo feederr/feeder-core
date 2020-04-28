@@ -29,8 +29,7 @@ public abstract class Tenantable<ID> extends BaseEntity<ID> {
   @Column(
       name = "tenant_id",
       updatable = false,
-      nullable = false,
-      unique = true
+      nullable = false
   )
   private UUID tenantId;
 

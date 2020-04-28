@@ -2,6 +2,7 @@ package org.feeder.api.core.exception;
 
 import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.METHOD_NOT_ALLOWED;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -56,7 +57,19 @@ public class GlobalExceptionHandler {
     ApiError error = new ApiError(
         BAD_REQUEST,
         exception.getMessage(),
-        "tenancy is required"
+        "Tenancy is required"
+    );
+
+    return buildResponseEntity(error);
+  }
+
+  @ExceptionHandler(TenancyMismatchException.class)
+  public ResponseEntity<ApiError> handle(TenancyMismatchException exception) {
+
+    ApiError error = new ApiError(
+        FORBIDDEN,
+        exception.getMessage(),
+        "Tenancy mismatch"
     );
 
     return buildResponseEntity(error);

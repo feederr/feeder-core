@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.feeder.api.core.repository.EntityClassAwareRepository;
 import org.springframework.aop.framework.Advised;
 
 @Slf4j
@@ -33,7 +32,7 @@ public class TenancyAspect {
 
     try {
 
-      EntityClassAwareRepository<?, ?> advisedRepository = (EntityClassAwareRepository<?, ?>) target
+      TenancyAwareRepository<?, ?> advisedRepository = (TenancyAwareRepository<?, ?>) target
           .getTargetSource().getTarget();
 
       Class<?> entityClass = advisedRepository.getEntityClass();
@@ -41,7 +40,7 @@ public class TenancyAspect {
       return filter.supports(entityClass);
 
     } catch (Exception ex) {
-      log.error("Failed to obtain {}", EntityClassAwareRepository.class.getSimpleName());
+      log.error("Failed to obtain {}", TenancyAwareRepository.class.getSimpleName());
       return false;
     }
 
