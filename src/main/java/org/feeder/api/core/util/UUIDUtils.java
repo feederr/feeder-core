@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class UUIDUtils {
 
-  private static TimeBasedGenerator timeBasedGenerator = Generators.timeBasedGenerator();
+  private static final TimeBasedGenerator timeBasedGenerator = Generators.timeBasedGenerator();
 
   /**
    * <a href="https://mysqlserverteam.com/storing-uuid-values-in-mysql-tables">Refer to:</a>
