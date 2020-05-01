@@ -6,6 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import org.feeder.api.core.configuration.AsyncApplicationEventConfiguration;
 import org.feeder.api.core.configuration.ExceptionHandlingConfiguration;
+import org.feeder.api.core.configuration.HierarchicalMethodSecurityConfiguration;
 import org.feeder.api.core.configuration.JpaAuditingConfiguration;
 import org.feeder.api.core.configuration.ResourceServerConfiguration;
 import org.feeder.api.core.configuration.TenancyConfiguration;
@@ -19,6 +20,7 @@ import org.springframework.context.annotation.Import;
     AsyncApplicationEventConfiguration.class,
     JpaAuditingConfiguration.class,
     ResourceServerConfiguration.class,
+    HierarchicalMethodSecurityConfiguration.class,
     TenancyConfiguration.class
 })
 @SpringBootApplication

@@ -25,6 +25,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
@@ -46,6 +47,18 @@ public class GlobalExceptionHandler {
         INTERNAL_SERVER_ERROR,
         exception.getMessage(),
         "Something went wrong"
+    );
+
+    return buildResponseEntity(error);
+  }
+
+  @ExceptionHandler(AccessDeniedException.class)
+  public ResponseEntity<ApiError> handle(AccessDeniedException exception) {
+
+    ApiError error = new ApiError(
+        FORBIDDEN,
+        exception.getMessage(),
+        "Forbidden"
     );
 
     return buildResponseEntity(error);

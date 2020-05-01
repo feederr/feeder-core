@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -21,7 +20,6 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 @Configuration
 @EnableWebSecurity
 @EnableResourceServer
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
   @Value("${spring.application.name}")
