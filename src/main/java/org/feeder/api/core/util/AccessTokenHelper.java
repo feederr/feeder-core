@@ -10,7 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class AccessTokenHelper {
+public final class AccessTokenHelper {
 
   public static final String TOKEN_TYPE_KEY = "_t";
 
