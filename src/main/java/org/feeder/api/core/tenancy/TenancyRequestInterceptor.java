@@ -2,7 +2,7 @@ package org.feeder.api.core.tenancy;
 
 import static org.feeder.api.core.tenancy.TenancyRequestContextHolder.clearTenancyContext;
 import static org.feeder.api.core.tenancy.TenancyRequestContextHolder.setTenancyContext;
-import static org.feeder.api.core.util.AccessTokenHelper.extractUserId;
+import static org.feeder.api.core.util.TokenHelper.extractUserId;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;

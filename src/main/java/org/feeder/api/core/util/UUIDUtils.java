@@ -34,6 +34,10 @@ public final class UUIDUtils {
     return getGUIDFromByteArray(transform(timeBasedGenerator.generate()));
   }
 
+  public static UUID optimizedUUIDFrom(final UUID notOptimized) {
+    return getGUIDFromByteArray(transform(notOptimized));
+  }
+
   private static byte[] transform(final UUID uuid) {
 
     final byte[] out = new byte[16];
