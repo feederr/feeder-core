@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class TenancyRequestContextHolder {
+public final class TenancyRequestContextHolder {
 
   private static final ThreadLocal<TenancyContext> tenancyRequestContext = new InheritableThreadLocal<>() {
     @Override
