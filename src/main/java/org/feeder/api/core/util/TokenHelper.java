@@ -1,8 +1,8 @@
 package org.feeder.api.core.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -33,18 +33,38 @@ public final class TokenHelper {
 
   private static final ObjectMapper mapper = new ObjectMapper();
 
-  private static final TypeReference<Map<String, Object>> typeRef
-      = new TypeReference<Map<String, Object>>() {
+  private static final TypeReference<Map<String, Object>> typeRef = new TypeReference<>() {
   };
 
   public enum TokenType {
     CLIENT, USER
   }
 
+  public static Optional<String> extractClientId() {
+    return getValue(CLIENT_ID_KEY)
+        .map(Object::toString);
+  }
+
   public static Optional<UUID> extractUserId() {
     return getValue(USER_ID_KEY)
         .map(Object::toString)
         .map(UUID::fromString);
+  }
+
+  public static boolean isClientToken() {
+    return tokenOfType(TokenType.CLIENT);
+  }
+
+  public static boolean isUserToken() {
+    return tokenOfType(TokenType.USER);
+  }
+
+  private static boolean tokenOfType(TokenType tokenType) {
+    return getValue(TOKEN_TYPE_KEY)
+        .map(Object::toString)
+        .map(TokenType::valueOf)
+        .filter(tokenType::equals)
+        .isPresent();
   }
 
   public static String getClaim(Map<String, Object> map, String key) {
@@ -55,6 +75,7 @@ public final class TokenHelper {
     return mapClaimsFromJwt(JwtHelper.decode(tokenValue));
   }
 
+  @SuppressWarnings("ALL")
   private static Optional<Map<String, Object>> mapClaimsFromJwt(Jwt jwt) {
 
     Optional<Map<String, Object>> map = Optional.empty();
@@ -65,13 +86,15 @@ public final class TokenHelper {
 
       map = Optional.ofNullable(mapper.readValue(claims, typeRef));
 
-    } catch (IOException ignored) {
+
+    } catch (JsonProcessingException e) {
       log.warn("Invalid token claims");
     }
 
     return map;
   }
 
+  @SuppressWarnings("ALL")
   private static Optional<Object> getValue(String name) {
 
     final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

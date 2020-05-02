@@ -35,7 +35,7 @@ public class TenancyAwareRepository<ENTITY, ID> extends SimpleJpaRepository<ENTI
             return tenantId.equals(((Tenantable) result).getTenantId());
           }
 
-          return false;
+          return true;
         });
   }
 
