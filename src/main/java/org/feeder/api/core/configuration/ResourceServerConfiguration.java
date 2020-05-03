@@ -3,10 +3,13 @@ package org.feeder.api.core.configuration;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import lombok.SneakyThrows;
+import org.feeder.api.core.domain.ApiError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -14,6 +17,8 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler;
+import org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint;
 import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
@@ -31,7 +36,9 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
   @Override
   @SneakyThrows
   public void configure(ResourceServerSecurityConfigurer configurer) {
-    configurer.resourceId(resource);
+    configurer.resourceId(resource)
+        .accessDeniedHandler(new CustomAccessDeniedHandler())
+        .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
   }
 
   // @formatter:off
@@ -52,6 +59,44 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     JwtAccessTokenConverter jwtAccessTokenConverterBean = applicationContext
         .getBean(JwtAccessTokenConverter.class);
     jwtAccessTokenConverterBean.setAccessTokenConverter(new CustomTokenConverter());
+  }
+
+  private static class CustomAccessDeniedHandler extends OAuth2AccessDeniedHandler {
+
+    @Override
+    protected ResponseEntity<?> enhanceResponse(ResponseEntity<?> response, Exception exception) {
+
+      ApiError error = new ApiError(
+          response.getStatusCode(),
+          exception.getMessage(),
+          exception.getMessage()
+      );
+
+      ResponseEntity<?> enhancedResponse = ResponseEntity.status(response.getStatusCode())
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(error);
+
+      return super.enhanceResponse(enhancedResponse, exception);
+    }
+  }
+
+  private static class CustomAuthenticationEntryPoint extends OAuth2AuthenticationEntryPoint {
+
+    @Override
+    protected ResponseEntity<?> enhanceResponse(ResponseEntity<?> response, Exception exception) {
+
+      ApiError error = new ApiError(
+          response.getStatusCode(),
+          exception.getMessage(),
+          exception.getMessage()
+      );
+
+      ResponseEntity<?> enhancedResponse = ResponseEntity.status(response.getStatusCode())
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(error);
+
+      return super.enhanceResponse(enhancedResponse, exception);
+    }
   }
 
   private static class CustomTokenConverter extends DefaultAccessTokenConverter {
