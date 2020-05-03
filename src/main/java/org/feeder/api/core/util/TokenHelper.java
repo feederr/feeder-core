@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.jwt.Jwt;
 import org.springframework.security.jwt.JwtHelper;
+import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 
 @Slf4j
@@ -72,7 +73,12 @@ public final class TokenHelper {
   }
 
   public static Optional<Map<String, Object>> getClaims(String tokenValue) {
-    return mapClaimsFromJwt(JwtHelper.decode(tokenValue));
+    try {
+      Jwt token = JwtHelper.decode(tokenValue);
+      return mapClaimsFromJwt(token);
+    } catch (RuntimeException ex) {
+      throw new InvalidTokenException("Token decoding failed", ex);
+    }
   }
 
   @SuppressWarnings("ALL")
