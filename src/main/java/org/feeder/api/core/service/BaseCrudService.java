@@ -1,23 +1,27 @@
 package org.feeder.api.core.service;
 
+import cz.jirutka.rsql.parser.RSQLParser;
+import cz.jirutka.rsql.parser.ast.Node;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.feeder.api.core.domain.BaseEntity;
 import org.feeder.api.core.exception.EntityNotFoundException;
 import org.feeder.api.core.mapper.BaseMapper;
+import org.feeder.api.core.search.CustomRsqlVisitor;
+import org.feeder.api.core.search.JpaSpecificationRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
-public abstract class BaseCrudService<ENTITY extends BaseEntity, REQUEST_VO, RESPONSE_VO> {
+public abstract class BaseCrudService<ENTITY extends BaseEntity<UUID>, REQUEST_VO, RESPONSE_VO> {
 
   protected abstract BaseMapper<ENTITY, REQUEST_VO, RESPONSE_VO> getMapper();
 
-  protected abstract JpaRepository<ENTITY, UUID> getRepository();
+  protected abstract JpaSpecificationRepository<ENTITY, UUID> getRepository();
 
   @Transactional(propagation = Propagation.REQUIRED)
   public RESPONSE_VO create(REQUEST_VO vo, UUID id, Object... args) {
@@ -40,15 +44,32 @@ public abstract class BaseCrudService<ENTITY extends BaseEntity, REQUEST_VO, RES
   }
 
   @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-  public Page<RESPONSE_VO> getAll(Pageable pageable, Object... args) {
+  public Page<RESPONSE_VO> getAllBySpec(String predicate, Pageable pageable) {
 
-    log.debug("Get {} on page: {} with size: {}",
-        getEntityClass().getSimpleName(), pageable.getPageNumber(), pageable.getPageSize());
+    log.debug("Get {} on page: {} with size: {} and predicate: {}",
+        getEntityClass().getSimpleName(), pageable.getPageNumber(), pageable.getPageSize(),
+        predicate);
 
-    Page<ENTITY> fetchedEntities = getEntities(pageable, args);
+    Page<ENTITY> entities;
 
-    return fetchedEntities.map(
-        entity -> getMapper().toResponseVO(entity, args)
+    if (predicate == null) {
+      entities = getEntities(pageable);
+    } else {
+
+      Node root = new RSQLParser().parse(predicate);
+      Specification<ENTITY> specification = root.accept(new CustomRsqlVisitor<>());
+
+      if (specification == null) {
+        log.debug("Unable to build specification");
+        entities = getEntities(pageable);
+      } else {
+        entities = getEntitiesBySpec(specification, pageable);
+      }
+
+    }
+
+    return entities.map(
+        entity -> getMapper().toResponseVO(entity)
     );
   }
 
@@ -97,8 +118,12 @@ public abstract class BaseCrudService<ENTITY extends BaseEntity, REQUEST_VO, RES
     return fetchedEntity;
   }
 
-  protected Page<ENTITY> getEntities(Pageable pageable, Object... args) {
+  protected Page<ENTITY> getEntities(Pageable pageable) {
     return getRepository().findAll(pageable);
+  }
+
+  protected Page<ENTITY> getEntitiesBySpec(Specification<ENTITY> specification, Pageable pageable) {
+    return getRepository().findAll(specification, pageable);
   }
 
   protected ENTITY updateEntity(ENTITY entity, REQUEST_VO vo, Object... args) {
