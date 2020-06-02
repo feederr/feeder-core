@@ -12,7 +12,7 @@
   <!--  Z is the patch version. Changes to this indicate that internal changes were made, but that no changes (even compatible changes) were made to the API.-->
   <properties>
     <java.version>13</java.version>
-    <project.version>0.10.0</project.version>
+    <project.version>0.11.0</project.version>
   </properties>
 
   <parent>
@@ -44,6 +44,11 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-oauth2</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.kafka</groupId>
+      <artifactId>spring-kafka</artifactId>
     </dependency>
 
     <dependency>
