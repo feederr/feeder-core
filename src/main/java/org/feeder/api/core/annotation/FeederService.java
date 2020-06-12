@@ -12,9 +12,9 @@ import org.feeder.api.core.configuration.JpaAuditingConfiguration;
 import org.feeder.api.core.configuration.KafkaConfiguration;
 import org.feeder.api.core.configuration.ResourceServerConfiguration;
 import org.feeder.api.core.configuration.TenancyConfiguration;
+import org.feeder.api.core.configuration.WebConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
@@ -26,9 +26,9 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
     HierarchicalMethodSecurityConfiguration.class,
     TenancyConfiguration.class,
     KafkaConfiguration.class,
-    DispatcherConfiguration.class
+    DispatcherConfiguration.class,
+    WebConfiguration.class
 })
-@EnableWebMvc
 @SpringBootApplication
 public @interface FeederService {
 
