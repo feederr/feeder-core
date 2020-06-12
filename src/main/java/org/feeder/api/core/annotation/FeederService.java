@@ -5,6 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import org.feeder.api.core.configuration.AsyncApplicationEventConfiguration;
+import org.feeder.api.core.configuration.DispatcherConfiguration;
 import org.feeder.api.core.configuration.ExceptionHandlingConfiguration;
 import org.feeder.api.core.configuration.HierarchicalMethodSecurityConfiguration;
 import org.feeder.api.core.configuration.JpaAuditingConfiguration;
@@ -13,6 +14,7 @@ import org.feeder.api.core.configuration.ResourceServerConfiguration;
 import org.feeder.api.core.configuration.TenancyConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
@@ -23,8 +25,10 @@ import org.springframework.context.annotation.Import;
     ResourceServerConfiguration.class,
     HierarchicalMethodSecurityConfiguration.class,
     TenancyConfiguration.class,
-    KafkaConfiguration.class
+    KafkaConfiguration.class,
+    DispatcherConfiguration.class
 })
+@EnableWebMvc
 @SpringBootApplication
 public @interface FeederService {
 
